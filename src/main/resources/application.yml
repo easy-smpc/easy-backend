@@ -1,0 +1,54 @@
+spring:
+  jpa:
+    open-in-view: false
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  main:
+    allow-circular-references: true
+
+app:
+  response:
+    # possible entries: application/json or text/plain
+    preferred-media-type: application/json
+  datasource:
+    pseudonymization:
+      url: jdbc:postgresql://localhost:5432/easybackend
+      username: postgres
+      password: admin
+      configuration:
+        maximum-pool-size: 20
+
+server:
+  port: 8080
+  error:
+    whitelabel:
+      enabled: false
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+      
+ 
+keycloak:
+  # turn off Spring-Boots Keycloak AutoConfiguration:
+  # We only want to use Spring-Security without servlet container specific infrastructure.
+  # This allows us to pull the Keycloak configuration from here instead of keycloak.json
+#  enabled: false
+  realm: demo
+  auth-server-url: http://localhost:8090/auth
+  # The client-id
+  resource: demo-app
+  public-client: true
+#  enable-basic-auth: false # disable only except token not a username_password in header
+#  credentials:
+#    secret: QZfHAtk9ke7mrHhPEX1Lxh9VWyljn30L
+#  ssl-required: external
+#  # principal-attribute: preferred_username
+#  use-resource-role-mappings: true
+#  token-minimum-time-to-live: 30
+#  confidential-port: 0
+#  bearer-only: true # needed to disable redirect for a login
+#  verify-token-audience: true # https://www.keycloak.org/docs/latest/server_admin/#audience-support
