@@ -35,9 +35,6 @@ public class GlobalSecurityConfiguration extends KeycloakWebSecurityConfigurerAd
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
-        http
-                .authorizeRequests()
-                .anyRequest()
-                .authenticated();
+        http.csrf().disable().authorizeRequests().anyRequest().authenticated();
     }
 }

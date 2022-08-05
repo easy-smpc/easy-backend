@@ -20,9 +20,10 @@ package org.bihealth.mi.easybackend.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,9 +45,11 @@ public class MessageRESTController {
      * 
      * @param scope
      * @param user
+     * @param message
      * @return
      */
-    @GetMapping("/message/{scope}/{user}")
+    @PostMapping("/message/{scope}/{user}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<String> sendMessage(@PathVariable("scope") String scope,
                                               @PathVariable("user") String user,
                                               @RequestParam(name = "message", required = true) String message) {
@@ -58,9 +61,21 @@ public class MessageRESTController {
         return ResponseEntity.ok("Message sent");
     }
     
-    @GetMapping("/hello")
-    public ResponseEntity<String> hello(Authentication authentication) {
-        final String body = "Hello " + authentication.getName();
-        return ResponseEntity.ok(body);
+    /**
+     * Gets a message
+     * 
+     * @param user
+     * @param messageId
+     * @return
+     */
+    @GetMapping("/message/{user}")
+    public ResponseEntity<String> getMessage(@PathVariable("user") String user,
+                                             @RequestParam(name = "messageId", required = true) String messageId) {
+        // Logger
+        LOGGER.debug(String.format("Request for user %s with id %s", user, messageId));
+        System.out.println(String.format("Request for user %s with id %s", user, messageId));
+        
+        // Return
+        return ResponseEntity.ok("Message content");
     }
 }
