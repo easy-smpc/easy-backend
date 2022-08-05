@@ -20,8 +20,9 @@ package org.bihealth.mi.easybackend.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,15 +46,21 @@ public class MessageRESTController {
      * @param user
      * @return
      */
-    @PostMapping("/message/{scope}/{user}")
+    @GetMapping("/message/{scope}/{user}")
     public ResponseEntity<String> sendMessage(@PathVariable("scope") String scope,
                                               @PathVariable("user") String user,
                                               @RequestParam(name = "message", required = true) String message) {
         // Logger
         LOGGER.debug(String.format("Request for scope %s, user %s with content %s", scope, user, message));
-        System.out.println("Request");
+        System.out.println(String.format("Request for scope %s, user %s with content %s", scope, user, message));
         
         // Return
         return ResponseEntity.ok("Message sent");
-    }    
+    }
+    
+    @GetMapping("/hello")
+    public ResponseEntity<String> hello(Authentication authentication) {
+        final String body = "Hello " + authentication.getName();
+        return ResponseEntity.ok(body);
+    }
 }

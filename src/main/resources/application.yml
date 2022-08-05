@@ -33,22 +33,19 @@ server:
       
  
 keycloak:
-  # turn off Spring-Boots Keycloak AutoConfiguration:
-  # We only want to use Spring-Security without servlet container specific infrastructure.
-  # This allows us to pull the Keycloak configuration from here instead of keycloak.json
-#  enabled: false
-  realm: demo
-  auth-server-url: http://localhost:8090/auth
-  # The client-id
-  resource: demo-app
-  public-client: true
-#  enable-basic-auth: false # disable only except token not a username_password in header
-#  credentials:
-#    secret: QZfHAtk9ke7mrHhPEX1Lxh9VWyljn30L
-#  ssl-required: external
+  realm: easybackend
+  auth-server-url: http://localhost:9090/auth
+  resource: easy-client
+  enable-basic-auth: false # disable only except token not a username_password in header
+  credentials:
+    secret: XNCdGo1ifJUMdRZYSXYobfUYD46JWJHA
+  ssl-required: external
 #  # principal-attribute: preferred_username
-#  use-resource-role-mappings: true
-#  token-minimum-time-to-live: 30
-#  confidential-port: 0
-#  bearer-only: true # needed to disable redirect for a login
-#  verify-token-audience: true # https://www.keycloak.org/docs/latest/server_admin/#audience-support
+  use-resource-role-mappings: true
+  token-minimum-time-to-live: 30
+  confidential-port: 0
+  bearer-only: true # needed to disable redirect for a login
+  # TODO Check token audience
+  #verify-token-audience: true # https://www.keycloak.org/docs/latest/server_admin/#audience-support
+  # TODO Enables leads to NPE. Why?
+  #enabled: false
