@@ -17,6 +17,8 @@
 
 package org.bihealth.mi.easybackend.controller;
 
+import java.security.Principal;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -49,12 +51,11 @@ public class MessageRESTController {
      * @return
      */
     @PostMapping("/message/{scope}/{user}")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<String> sendMessage(@PathVariable("scope") String scope,
                                               @PathVariable("user") String user,
                                               @RequestParam(name = "message", required = true) String message) {
         // Logger
-        LOGGER.debug(String.format("Request for scope %s, user %s with content %s", scope, user, message));
+        LOGGER.error(String.format("Request for scope %s, user %s with content %s", scope, user, message));
         System.out.println(String.format("Request for scope %s, user %s with content %s", scope, user, message));
         
         // Return
@@ -66,14 +67,16 @@ public class MessageRESTController {
      * 
      * @param user
      * @param messageId
+     * @param principal
      * @return
      */
     @GetMapping("/message/{user}")
     public ResponseEntity<String> getMessage(@PathVariable("user") String user,
-                                             @RequestParam(name = "messageId", required = true) String messageId) {
+                                             @RequestParam(name = "messageId", required = true) String messageId,
+                                             Principal principal) {
         // Logger
-        LOGGER.debug(String.format("Request for user %s with id %s", user, messageId));
-        System.out.println(String.format("Request for user %s with id %s", user, messageId));
+        LOGGER.debug(String.format("Request for user %s with id %s and principal %s", user, messageId, principal.getName()));
+        System.out.println(String.format("Request for user %s with id %s and principal %s", user, messageId, principal.getName()));
         
         // Return
         return ResponseEntity.ok("Message content");
