@@ -14,7 +14,7 @@ app:
     # possible entries: application/json or text/plain
     preferred-media-type: application/json
   datasource:
-    pseudonymization:
+    easybackend:
       url: jdbc:postgresql://localhost:5432/easybackend
       username: postgres
       password: admin

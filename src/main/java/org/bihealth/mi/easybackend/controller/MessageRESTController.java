@@ -19,8 +19,12 @@ package org.bihealth.mi.easybackend.controller;
 
 import java.security.Principal;
 
+import org.bihealth.mi.easybackend.jooq.generated.tables.pojos.Message;
+import org.bihealth.mi.easybackend.service.MessageDBAccessService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,43 +46,46 @@ public class MessageRESTController {
     /** The logger object for this class. */
     private static Logger LOGGER = LoggerFactory.getLogger(MessageRESTController.class);
     
+    /** Enables the access to the message specific database access methods. */
+    @Autowired
+    private MessageDBAccessService messageDBAccessService;
+    
     /**
      * Send a message
      * 
      * @param scope
-     * @param user
+     * @param receiver
      * @param message
      * @return
      */
     @PreAuthorize("hasRole('EASYBACKEND_USER')")
-    @PostMapping("/message/{scope}/{user}")
+    @PostMapping("/message/{scope}/{receiver}")
     public ResponseEntity<String> sendMessage(@PathVariable("scope") String scope,
-                                              @PathVariable("user") String user,
+                                              @PathVariable("receiver") String receiver,
                                               @RequestParam(name = "message", required = true) String message) {
         // Logger
-        LOGGER.error(String.format("Request for scope %s, user %s with content %s", scope, user, message));
-        System.out.println(String.format("Request for scope %s, user %s with content %s", scope, user, message));
+        LOGGER.debug(String.format("Send message for scope %s and user %s", scope, receiver));
         
-        // Return
+        if(!messageDBAccessService.insertMessage(new Message().setReceiver(receiver).setScope(scope).setContent(message))) {
+            // Return error
+            LOGGER.debug(String.format("Unable to write message for scope %s and user %s", scope, receiver));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
+        // Return success
         return ResponseEntity.ok("Message sent");
     }
     
     /**
-     * Gets a message
+     * Receives all messages for a user
      * 
-     * @param user
-     * @param messageId
-     * @param principal
      * @return
      */
     @PreAuthorize("hasRole('EASYBACKEND_USER')")
-    @GetMapping("/message/{user}")
-    public ResponseEntity<String> getMessage(@PathVariable("user") String user,
-                                             @RequestParam(name = "messageId", required = true) String messageId,
-                                             Principal principal) {
+    @GetMapping("/message/")
+    public ResponseEntity<String> getMessage(Principal principal) {
         // Logger
-        LOGGER.debug(String.format("Request for user %s with id %s and principal %s", user, messageId, principal.getName()));
-        System.out.println(String.format("Request for user %s with id %s and principal %s", user, messageId, principal.getName()));
+        LOGGER.debug(String.format("Get messages for user %s", principal.getName()));
         
         // Return
         return ResponseEntity.ok("Message content");
