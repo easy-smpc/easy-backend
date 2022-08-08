@@ -33,15 +33,15 @@ server:
       
  
 keycloak:
-  realm: easybackend
+  realm: master
   auth-server-url: http://localhost:9090/auth
   resource: easy-client
   enable-basic-auth: false # disable only except token not a username_password in header
   credentials:
-    secret: XNCdGo1ifJUMdRZYSXYobfUYD46JWJHA
+    secret: Sg9rJVSaBGjj7nX92lUsqsV4NL3uSLXO
   ssl-required: external
 #  # principal-attribute: preferred_username
-  use-resource-role-mappings: true
+  use-resource-role-mappings: false
   token-minimum-time-to-live: 30
   confidential-port: 0
   bearer-only: true # needed to disable redirect for a login

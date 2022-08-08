@@ -50,6 +50,7 @@ public class MessageRESTController {
      * @param message
      * @return
      */
+    @PreAuthorize("hasRole('EASYBACKEND_USER')")
     @PostMapping("/message/{scope}/{user}")
     public ResponseEntity<String> sendMessage(@PathVariable("scope") String scope,
                                               @PathVariable("user") String user,
@@ -70,6 +71,7 @@ public class MessageRESTController {
      * @param principal
      * @return
      */
+    @PreAuthorize("hasRole('EASYBACKEND_USER')")
     @GetMapping("/message/{user}")
     public ResponseEntity<String> getMessage(@PathVariable("user") String user,
                                              @RequestParam(name = "messageId", required = true) String messageId,
