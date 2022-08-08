@@ -6,7 +6,7 @@ package org.bihealth.mi.easybackend.jooq.generated;
 
 import javax.annotation.processing.Generated;
 
-import org.bihealth.mi.easybackend.jooq.generated.tables.Messages;
+import org.bihealth.mi.easybackend.jooq.generated.tables.Message;
 
 
 /**
@@ -23,7 +23,7 @@ import org.bihealth.mi.easybackend.jooq.generated.tables.Messages;
 public class Tables {
 
     /**
-     * The table <code>public.messages</code>.
+     * The table <code>public.message</code>.
      */
-    public static final Messages MESSAGES = Messages.MESSAGES;
+    public static final Message MESSAGE = Message.MESSAGE;
 }

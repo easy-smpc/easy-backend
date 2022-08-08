@@ -13,8 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
 
-import org.bihealth.mi.easybackend.jooq.generated.tables.Messages;
-import org.bihealth.mi.easybackend.jooq.generated.tables.interfaces.IMessages;
+import org.bihealth.mi.easybackend.jooq.generated.tables.Message;
+import org.bihealth.mi.easybackend.jooq.generated.tables.interfaces.IMessage;
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record4;
@@ -35,27 +35,27 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
 @Table(
-    name = "messages",
+    name = "message",
     schema = "public",
     indexes = {
         @Index(name = "userscopeidx", columnList = "receiver ASC, scope ASC")
     }
 )
-public class MessagesRecord extends UpdatableRecordImpl<MessagesRecord> implements Record4<Integer, String, String, String>, IMessages {
+public class MessageRecord extends UpdatableRecordImpl<MessageRecord> implements Record4<Integer, String, String, String>, IMessage {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>public.messages.id</code>.
+     * Setter for <code>public.message.id</code>.
      */
     @Override
-    public MessagesRecord setId(Integer value) {
+    public MessageRecord setId(Integer value) {
         set(0, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.messages.id</code>.
+     * Getter for <code>public.message.id</code>.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,16 +66,16 @@ public class MessagesRecord extends UpdatableRecordImpl<MessagesRecord> implemen
     }
 
     /**
-     * Setter for <code>public.messages.receiver</code>.
+     * Setter for <code>public.message.receiver</code>.
      */
     @Override
-    public MessagesRecord setReceiver(String value) {
+    public MessageRecord setReceiver(String value) {
         set(1, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.messages.receiver</code>.
+     * Getter for <code>public.message.receiver</code>.
      */
     @Column(name = "receiver", nullable = false)
     @Override
@@ -84,16 +84,16 @@ public class MessagesRecord extends UpdatableRecordImpl<MessagesRecord> implemen
     }
 
     /**
-     * Setter for <code>public.messages.scope</code>.
+     * Setter for <code>public.message.scope</code>.
      */
     @Override
-    public MessagesRecord setScope(String value) {
+    public MessageRecord setScope(String value) {
         set(2, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.messages.scope</code>.
+     * Getter for <code>public.message.scope</code>.
      */
     @Column(name = "scope", nullable = false)
     @Override
@@ -102,16 +102,16 @@ public class MessagesRecord extends UpdatableRecordImpl<MessagesRecord> implemen
     }
 
     /**
-     * Setter for <code>public.messages.content</code>.
+     * Setter for <code>public.message.content</code>.
      */
     @Override
-    public MessagesRecord setContent(String value) {
+    public MessageRecord setContent(String value) {
         set(3, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.messages.content</code>.
+     * Getter for <code>public.message.content</code>.
      */
     @Column(name = "content", nullable = false)
     @Override
@@ -144,22 +144,22 @@ public class MessagesRecord extends UpdatableRecordImpl<MessagesRecord> implemen
 
     @Override
     public Field<Integer> field1() {
-        return Messages.MESSAGES.ID;
+        return Message.MESSAGE.ID;
     }
 
     @Override
     public Field<String> field2() {
-        return Messages.MESSAGES.RECEIVER;
+        return Message.MESSAGE.RECEIVER;
     }
 
     @Override
     public Field<String> field3() {
-        return Messages.MESSAGES.SCOPE;
+        return Message.MESSAGE.SCOPE;
     }
 
     @Override
     public Field<String> field4() {
-        return Messages.MESSAGES.CONTENT;
+        return Message.MESSAGE.CONTENT;
     }
 
     @Override
@@ -203,31 +203,31 @@ public class MessagesRecord extends UpdatableRecordImpl<MessagesRecord> implemen
     }
 
     @Override
-    public MessagesRecord value1(Integer value) {
+    public MessageRecord value1(Integer value) {
         setId(value);
         return this;
     }
 
     @Override
-    public MessagesRecord value2(String value) {
+    public MessageRecord value2(String value) {
         setReceiver(value);
         return this;
     }
 
     @Override
-    public MessagesRecord value3(String value) {
+    public MessageRecord value3(String value) {
         setScope(value);
         return this;
     }
 
     @Override
-    public MessagesRecord value4(String value) {
+    public MessageRecord value4(String value) {
         setContent(value);
         return this;
     }
 
     @Override
-    public MessagesRecord values(Integer value1, String value2, String value3, String value4) {
+    public MessageRecord values(Integer value1, String value2, String value3, String value4) {
         value1(value1);
         value2(value2);
         value3(value3);
@@ -240,7 +240,7 @@ public class MessagesRecord extends UpdatableRecordImpl<MessagesRecord> implemen
     // -------------------------------------------------------------------------
 
     @Override
-    public void from(IMessages from) {
+    public void from(IMessage from) {
         setId(from.getId());
         setReceiver(from.getReceiver());
         setScope(from.getScope());
@@ -248,7 +248,7 @@ public class MessagesRecord extends UpdatableRecordImpl<MessagesRecord> implemen
     }
 
     @Override
-    public <E extends IMessages> E into(E into) {
+    public <E extends IMessage> E into(E into) {
         into.from(this);
         return into;
     }
@@ -258,17 +258,17 @@ public class MessagesRecord extends UpdatableRecordImpl<MessagesRecord> implemen
     // -------------------------------------------------------------------------
 
     /**
-     * Create a detached MessagesRecord
+     * Create a detached MessageRecord
      */
-    public MessagesRecord() {
-        super(Messages.MESSAGES);
+    public MessageRecord() {
+        super(Message.MESSAGE);
     }
 
     /**
-     * Create a detached, initialised MessagesRecord
+     * Create a detached, initialised MessageRecord
      */
-    public MessagesRecord(Integer id, String receiver, String scope, String content) {
-        super(Messages.MESSAGES);
+    public MessageRecord(Integer id, String receiver, String scope, String content) {
+        super(Message.MESSAGE);
 
         setId(id);
         setReceiver(receiver);
@@ -277,10 +277,10 @@ public class MessagesRecord extends UpdatableRecordImpl<MessagesRecord> implemen
     }
 
     /**
-     * Create a detached, initialised MessagesRecord
+     * Create a detached, initialised MessageRecord
      */
-    public MessagesRecord(org.bihealth.mi.easybackend.jooq.generated.tables.pojos.Messages value) {
-        super(Messages.MESSAGES);
+    public MessageRecord(org.bihealth.mi.easybackend.jooq.generated.tables.pojos.Message value) {
+        super(Message.MESSAGE);
 
         if (value != null) {
             setId(value.getId());

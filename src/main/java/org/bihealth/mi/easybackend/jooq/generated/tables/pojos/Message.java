@@ -13,7 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
 
-import org.bihealth.mi.easybackend.jooq.generated.tables.interfaces.IMessages;
+import org.bihealth.mi.easybackend.jooq.generated.tables.interfaces.IMessage;
 
 
 /**
@@ -29,13 +29,13 @@ import org.bihealth.mi.easybackend.jooq.generated.tables.interfaces.IMessages;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
 @Table(
-    name = "messages",
+    name = "message",
     schema = "public",
     indexes = {
         @Index(name = "userscopeidx", columnList = "receiver ASC, scope ASC")
     }
 )
-public class Messages implements IMessages {
+public class Message implements IMessage {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,16 +44,16 @@ public class Messages implements IMessages {
     private String  scope;
     private String  content;
 
-    public Messages() {}
+    public Message() {}
 
-    public Messages(IMessages value) {
+    public Message(IMessage value) {
         this.id = value.getId();
         this.receiver = value.getReceiver();
         this.scope = value.getScope();
         this.content = value.getContent();
     }
 
-    public Messages(
+    public Message(
         Integer id,
         String  receiver,
         String  scope,
@@ -66,7 +66,7 @@ public class Messages implements IMessages {
     }
 
     /**
-     * Getter for <code>public.messages.id</code>.
+     * Getter for <code>public.message.id</code>.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -77,16 +77,16 @@ public class Messages implements IMessages {
     }
 
     /**
-     * Setter for <code>public.messages.id</code>.
+     * Setter for <code>public.message.id</code>.
      */
     @Override
-    public Messages setId(Integer id) {
+    public Message setId(Integer id) {
         this.id = id;
         return this;
     }
 
     /**
-     * Getter for <code>public.messages.receiver</code>.
+     * Getter for <code>public.message.receiver</code>.
      */
     @Column(name = "receiver", nullable = false)
     @Override
@@ -95,16 +95,16 @@ public class Messages implements IMessages {
     }
 
     /**
-     * Setter for <code>public.messages.receiver</code>.
+     * Setter for <code>public.message.receiver</code>.
      */
     @Override
-    public Messages setReceiver(String receiver) {
+    public Message setReceiver(String receiver) {
         this.receiver = receiver;
         return this;
     }
 
     /**
-     * Getter for <code>public.messages.scope</code>.
+     * Getter for <code>public.message.scope</code>.
      */
     @Column(name = "scope", nullable = false)
     @Override
@@ -113,16 +113,16 @@ public class Messages implements IMessages {
     }
 
     /**
-     * Setter for <code>public.messages.scope</code>.
+     * Setter for <code>public.message.scope</code>.
      */
     @Override
-    public Messages setScope(String scope) {
+    public Message setScope(String scope) {
         this.scope = scope;
         return this;
     }
 
     /**
-     * Getter for <code>public.messages.content</code>.
+     * Getter for <code>public.message.content</code>.
      */
     @Column(name = "content", nullable = false)
     @Override
@@ -131,10 +131,10 @@ public class Messages implements IMessages {
     }
 
     /**
-     * Setter for <code>public.messages.content</code>.
+     * Setter for <code>public.message.content</code>.
      */
     @Override
-    public Messages setContent(String content) {
+    public Message setContent(String content) {
         this.content = content;
         return this;
     }
@@ -147,7 +147,7 @@ public class Messages implements IMessages {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final Messages other = (Messages) obj;
+        final Message other = (Message) obj;
         if (this.id == null) {
             if (other.id != null)
                 return false;
@@ -188,7 +188,7 @@ public class Messages implements IMessages {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Messages (");
+        StringBuilder sb = new StringBuilder("Message (");
 
         sb.append(id);
         sb.append(", ").append(receiver);
@@ -204,7 +204,7 @@ public class Messages implements IMessages {
     // -------------------------------------------------------------------------
 
     @Override
-    public void from(IMessages from) {
+    public void from(IMessage from) {
         setId(from.getId());
         setReceiver(from.getReceiver());
         setScope(from.getScope());
@@ -212,7 +212,7 @@ public class Messages implements IMessages {
     }
 
     @Override
-    public <E extends IMessages> E into(E into) {
+    public <E extends IMessage> E into(E into) {
         into.from(this);
         return into;
     }

@@ -29,21 +29,21 @@ import javax.persistence.Table;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
 @Table(
-    name = "messages",
+    name = "message",
     schema = "public",
     indexes = {
         @Index(name = "userscopeidx", columnList = "receiver ASC, scope ASC")
     }
 )
-public interface IMessages extends Serializable {
+public interface IMessage extends Serializable {
 
     /**
-     * Setter for <code>public.messages.id</code>.
+     * Setter for <code>public.message.id</code>.
      */
-    public IMessages setId(Integer value);
+    public IMessage setId(Integer value);
 
     /**
-     * Getter for <code>public.messages.id</code>.
+     * Getter for <code>public.message.id</code>.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,34 +51,34 @@ public interface IMessages extends Serializable {
     public Integer getId();
 
     /**
-     * Setter for <code>public.messages.receiver</code>.
+     * Setter for <code>public.message.receiver</code>.
      */
-    public IMessages setReceiver(String value);
+    public IMessage setReceiver(String value);
 
     /**
-     * Getter for <code>public.messages.receiver</code>.
+     * Getter for <code>public.message.receiver</code>.
      */
     @Column(name = "receiver", nullable = false)
     public String getReceiver();
 
     /**
-     * Setter for <code>public.messages.scope</code>.
+     * Setter for <code>public.message.scope</code>.
      */
-    public IMessages setScope(String value);
+    public IMessage setScope(String value);
 
     /**
-     * Getter for <code>public.messages.scope</code>.
+     * Getter for <code>public.message.scope</code>.
      */
     @Column(name = "scope", nullable = false)
     public String getScope();
 
     /**
-     * Setter for <code>public.messages.content</code>.
+     * Setter for <code>public.message.content</code>.
      */
-    public IMessages setContent(String value);
+    public IMessage setContent(String value);
 
     /**
-     * Getter for <code>public.messages.content</code>.
+     * Getter for <code>public.message.content</code>.
      */
     @Column(name = "content", nullable = false)
     public String getContent();
@@ -89,13 +89,13 @@ public interface IMessages extends Serializable {
 
     /**
      * Load data from another generated Record/POJO implementing the common
-     * interface IMessages
+     * interface IMessage
      */
-    public void from(IMessages from);
+    public void from(IMessage from);
 
     /**
      * Copy data into another generated Record/POJO implementing the common
-     * interface IMessages
+     * interface IMessage
      */
-    public <E extends IMessages> E into(E into);
+    public <E extends IMessage> E into(E into);
 }

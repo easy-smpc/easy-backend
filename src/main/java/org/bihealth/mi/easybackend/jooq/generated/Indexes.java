@@ -6,7 +6,7 @@ package org.bihealth.mi.easybackend.jooq.generated;
 
 import javax.annotation.processing.Generated;
 
-import org.bihealth.mi.easybackend.jooq.generated.tables.Messages;
+import org.bihealth.mi.easybackend.jooq.generated.tables.Message;
 import org.jooq.Index;
 import org.jooq.OrderField;
 import org.jooq.impl.DSL;
@@ -30,5 +30,5 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
-    public static final Index USERSCOPEIDX = Internal.createIndex(DSL.name("userscopeidx"), Messages.MESSAGES, new OrderField[] { Messages.MESSAGES.RECEIVER, Messages.MESSAGES.SCOPE }, false);
+    public static final Index USERSCOPEIDX = Internal.createIndex(DSL.name("userscopeidx"), Message.MESSAGE, new OrderField[] { Message.MESSAGE.RECEIVER, Message.MESSAGE.SCOPE }, false);
 }

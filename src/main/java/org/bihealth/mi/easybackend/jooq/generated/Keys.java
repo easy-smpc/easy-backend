@@ -6,8 +6,8 @@ package org.bihealth.mi.easybackend.jooq.generated;
 
 import javax.annotation.processing.Generated;
 
-import org.bihealth.mi.easybackend.jooq.generated.tables.Messages;
-import org.bihealth.mi.easybackend.jooq.generated.tables.records.MessagesRecord;
+import org.bihealth.mi.easybackend.jooq.generated.tables.Message;
+import org.bihealth.mi.easybackend.jooq.generated.tables.records.MessageRecord;
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
@@ -32,5 +32,5 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<MessagesRecord> MESSAGES_PKEY = Internal.createUniqueKey(Messages.MESSAGES, DSL.name("messages_pkey"), new TableField[] { Messages.MESSAGES.ID }, true);
+    public static final UniqueKey<MessageRecord> MESSAGE_PKEY = Internal.createUniqueKey(Message.MESSAGE, DSL.name("message_pkey"), new TableField[] { Message.MESSAGE.ID }, true);
 }

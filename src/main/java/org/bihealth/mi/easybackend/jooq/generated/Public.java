@@ -9,9 +9,8 @@ import java.util.List;
 
 import javax.annotation.processing.Generated;
 
-import org.bihealth.mi.easybackend.jooq.generated.tables.Messages;
+import org.bihealth.mi.easybackend.jooq.generated.tables.Message;
 import org.jooq.Catalog;
-import org.jooq.Sequence;
 import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
 
@@ -37,9 +36,9 @@ public class Public extends SchemaImpl {
     public static final Public PUBLIC = new Public();
 
     /**
-     * The table <code>public.messages</code>.
+     * The table <code>public.message</code>.
      */
-    public final Messages MESSAGES = Messages.MESSAGES;
+    public final Message MESSAGE = Message.MESSAGE;
 
     /**
      * No further instances allowed
@@ -55,16 +54,9 @@ public class Public extends SchemaImpl {
     }
 
     @Override
-    public final List<Sequence<?>> getSequences() {
-        return Arrays.asList(
-            Sequences.MESSAGE_ID_SEQ
-        );
-    }
-
-    @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
-            Messages.MESSAGES
+            Message.MESSAGE
         );
     }
 }
