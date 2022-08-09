@@ -1,13 +1,10 @@
-/*
- * Pseudonymization Service
- * Copyright 2022 Armin Müller and contributors
- *
+/* 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,6 +15,7 @@
 package org.bihealth.mi.easybackend.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.bihealth.mi.easybackend.jooq.generated.tables.pojos.Message;
 import org.bihealth.mi.easybackend.service.MessageDBAccessService;
@@ -27,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,7 +50,7 @@ public class MessageRESTController {
     private MessageDBAccessService messageDBAccessService;
     
     /**
-     * Send a message
+     * Sends a message
      * 
      * @param scope
      * @param receiver
@@ -59,16 +58,16 @@ public class MessageRESTController {
      * @return
      */
     @PreAuthorize("hasRole('EASYBACKEND_USER')")
-    @PostMapping("/message/{scope}/{receiver}")
+    @PostMapping("/send/{scope}/{receiver}")
     public ResponseEntity<String> sendMessage(@PathVariable("scope") String scope,
                                               @PathVariable("receiver") String receiver,
                                               @RequestParam(name = "message", required = true) String message) {
         // Logger
-        LOGGER.debug(String.format("Send message for scope %s and user %s", scope, receiver));
+        LOGGER.debug(String.format("Send message for scope %s and receiver %s", scope, receiver));
         
         if(!messageDBAccessService.insertMessage(new Message().setReceiver(receiver).setScope(scope).setContent(message))) {
             // Return error
-            LOGGER.debug(String.format("Unable to write message for scope %s and user %s", scope, receiver));
+            LOGGER.debug(String.format("Unable to write message for scope %s and receiver %s", scope, receiver));
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         
@@ -77,17 +76,47 @@ public class MessageRESTController {
     }
     
     /**
-     * Receives all messages for a user
+     *  Receives all messages for a scope and a receiving user
      * 
+     * @param scope
+     * @param principal
      * @return
      */
     @PreAuthorize("hasRole('EASYBACKEND_USER')")
-    @GetMapping("/message/")
-    public ResponseEntity<String> getMessage(Principal principal) {
+    @GetMapping("/receive/{scope}")
+    public ResponseEntity<?> getMessages(@PathVariable("scope") String scope, Principal principal) {
         // Logger
-        LOGGER.debug(String.format("Get messages for user %s", principal.getName()));
-        
+        LOGGER.debug(String.format("Get messages for receiver %s", principal.getName()));
+
+        // Get data
+        List<Message> messages = messageDBAccessService.getMessages(principal.getName(), scope);
+
         // Return
-        return ResponseEntity.ok("Message content");
+        return ResponseEntity.status(HttpStatus.OK).body(messages);
+    }
+       
+    /**
+     * Deletes a message
+     * 
+     * @param messageId
+     * @param principal
+     * @return
+     */
+    @PreAuthorize("hasRole('EASYBACKEND_USER')")
+    @DeleteMapping("/message/{messageId}")
+    public ResponseEntity<?> deleteMessage(@PathVariable("messageId") int messageId, Principal principal) {
+        // Logger
+        LOGGER.debug(String.format("Delete message with id %d for receiver %s", messageId, principal.getName()));
+
+        // Delete data
+        if(!messageDBAccessService.deleteMessage(messageId, principal.getName())) {
+            
+            // Return error
+            LOGGER.debug(String.format("Unable to delete message with id %d and receiver %s", messageId, principal.getName()));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        // Return success
+        return ResponseEntity.ok("Message deleted");
     }
 }

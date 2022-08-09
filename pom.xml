@@ -9,7 +9,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<keycloak.version>16.1.0</keycloak.version>
 		<jooq.version>3.15.10</jooq.version>
-		<jar.finalName>pseudonymization</jar.finalName>
+		<jar.finalName>easybackend</jar.finalName>
 		<jooq.skip>false</jooq.skip>
 		<disruptor.version>3.4.3</disruptor.version>
 	</properties>

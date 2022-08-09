@@ -31,6 +31,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.zaxxer.hikari.HikariDataSource;
 
+/**
+ * Class to configure data source
+ * 
+ * @author Felix Wirth
+ *
+ */
 @Configuration(proxyBeanMethods = false)
 @EnableTransactionManagement
 @Component

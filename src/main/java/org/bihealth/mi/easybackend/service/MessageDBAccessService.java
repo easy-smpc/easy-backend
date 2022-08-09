@@ -14,12 +14,14 @@
 package org.bihealth.mi.easybackend.service;
 
 
+import static org.bihealth.mi.easybackend.jooq.generated.Tables.MESSAGE;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.bihealth.mi.easybackend.jooq.generated.tables.daos.MessageDao;
 import org.bihealth.mi.easybackend.jooq.generated.tables.pojos.Message;
-import static org.bihealth.mi.easybackend.jooq.generated.Tables.MESSAGE;
 import org.jooq.Configuration;
 import org.jooq.DSLContext;
 import org.jooq.TransactionalRunnable;
@@ -37,6 +39,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MessageDBAccessService {
+    
+    // TODO The methods dont distiguis between e.g. no data and error accessing the data base. Have them throw exceptions?
     
     /** Logger */
     private static Logger LOGGER = LoggerFactory.getLogger(MessageDBAccessService.class);
@@ -59,9 +63,9 @@ public class MessageDBAccessService {
     public static final String INSERTION_SUCCESS = "success";
     
     /**
-     * Method to retrieve the domain data access object
+     * Method to retrieve the data access object
      * 
-     * @return the domain DAO
+     * @return the DAO
      */
     private MessageDao getMessageDao() {
         // Create if necessary
@@ -72,17 +76,6 @@ public class MessageDBAccessService {
         // Return
         return this.messageDao;
     }
-
-    /**
-     * Retrieves a message
-     * 
-     * @param messageId
-     * @return the retrieved message as a jOOQ object, or {@code null} if nothing was found
-     */
-    public Message getMessageById(int messageId){
-        return this.getMessageDao().fetchOneById(messageId);
-    }
-    
     
     /**
      * Method to insert a message into the database.
@@ -116,7 +109,7 @@ public class MessageDBAccessService {
             });
 
             // Log success and return
-            LOGGER.debug("Successfully inserted the pseudonym into the database");
+            LOGGER.debug("Successfully inserted the message into the database");
             return true;
         } catch (Exception e) {
             // Log error and return
@@ -125,15 +118,15 @@ public class MessageDBAccessService {
         }
     }
     
+    
     /**
-     * Retrieves all messages for a user and scope
-     *
-     * @param domainName the name of the domain to search in
-     * @param identifier the identifier to search for
-     * @param idType     the type of the identifier
-     * @return the data element referring to the given identifier, or {@code null} when nothing is found or an error occurs
+     *  Retrieves all messages for a user and scope
+     * 
+     * @param receiver
+     * @param scope
+     * @return
      */
-    public List<Message> getRecordFromIdentifier(String receiver, String scope) {
+    public List<Message> getMessages(String receiver, String scope) {
         // Prepare
         List<Message> messages = new ArrayList<>();
         
@@ -168,9 +161,10 @@ public class MessageDBAccessService {
      * Delete message
      *
      * @param messageId
+     * @param receiver
      * @return deletion successful
      */
-    public boolean deleteMessage(int messageId) {
+    public boolean deleteMessage(int messageId, String receiver) {
         
         // Execute query
         try {
@@ -180,12 +174,13 @@ public class MessageDBAccessService {
                 public void run(Configuration configuration) throws Throwable {
 
                     // Delete message
-                    int deletedDomains = DSL.using(configuration).deleteFrom(MESSAGE)
+                    int deletedMessages = DSL.using(configuration).deleteFrom(MESSAGE)
                             .where(MESSAGE.ID.equal(messageId))
+                            .and(MESSAGE.RECEIVER.equal(receiver))
                             .execute();
                     
                     // Determine deletion success
-                    if (deletedDomains != 1) {
+                    if (deletedMessages != 1) {
                         // An unexpected number of records was affected. Log it and abort by throwing  an exception (which will rollback everything from the transaction).
                         LOGGER.error("Couldn't delete the message \"" + messageId + "\" from the database.");
                         throw new IOException();

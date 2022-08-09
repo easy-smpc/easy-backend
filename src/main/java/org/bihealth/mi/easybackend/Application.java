@@ -1,7 +1,4 @@
-/*
- * Pseudonymization Service
- * Copyright 2021-2022 Armin Müller and contributors
- * 
+/* 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,11 +28,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class Application {
 	
-	/** The logger object for this class. */
-	private static Logger logger = LoggerFactory.getLogger(Application.class);
+	/** Logger. */
+	private static Logger LOGGER = LoggerFactory.getLogger(Application.class);
 	
 	/**
-	 * The pseudonymization service's entry-point.
+	 * The entry point.
 	 * Starts the database-controller and the controller for the REST-API.
 	 * 
 	 * @param args
@@ -45,6 +42,6 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 		
 		// Finished start-up
-		logger.info("Start up procedure completed. Waiting for requests ...");
+		LOGGER.info("Start up procedure completed. Waiting for requests ...");
 	}
 }
