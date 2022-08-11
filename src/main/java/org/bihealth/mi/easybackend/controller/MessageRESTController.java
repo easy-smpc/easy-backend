@@ -29,8 +29,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -61,7 +61,8 @@ public class MessageRESTController {
     @PostMapping("/send/{scope}/{receiver}")
     public ResponseEntity<String> sendMessage(@PathVariable("scope") String scope,
                                               @PathVariable("receiver") String receiver,
-                                              @RequestParam(name = "message", required = true) String message) {
+                                              @RequestBody(required = true) String message) {
+        
         // Logger
         LOGGER.debug(String.format("Send message for scope %s and receiver %s", scope, receiver));
         
