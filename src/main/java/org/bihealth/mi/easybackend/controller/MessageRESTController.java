@@ -57,7 +57,7 @@ public class MessageRESTController {
      * @param message
      * @return
      */
-    @PreAuthorize("hasRole('EASYBACKEND_USER')")
+    @PreAuthorize("hasAuthority('easybackend_user')")
     @PostMapping("/send/{scope}/{receiver}")
     public ResponseEntity<String> sendMessage(@PathVariable("scope") String scope,
                                               @PathVariable("receiver") String receiver,
@@ -83,7 +83,7 @@ public class MessageRESTController {
      * @param principal
      * @return
      */
-    @PreAuthorize("hasRole('EASYBACKEND_USER')")
+    @PreAuthorize("hasAuthority('easybackend_user')")
     @GetMapping("/receive/{scope}")
     public ResponseEntity<?> getMessages(@PathVariable("scope") String scope, Principal principal) {
         // Logger
@@ -103,7 +103,7 @@ public class MessageRESTController {
      * @param principal
      * @return
      */
-    @PreAuthorize("hasRole('EASYBACKEND_USER')")
+    @PreAuthorize("hasAuthority('easybackend_user')")
     @DeleteMapping("/message/{messageId}")
     public ResponseEntity<?> deleteMessage(@PathVariable("messageId") int messageId, Principal principal) {
         // Logger

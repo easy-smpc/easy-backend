@@ -8,7 +8,7 @@
 	<Appenders>
 		<Async name="asyncLogger">
 			<AppenderRef ref="fileAppender" />
-			<AppenderRef ref="consoleAppender" level="AUDIT" />
+			<AppenderRef ref="consoleAppender" />
 		</Async>
 		<RollingFile name="fileAppender" fileName="easy-smpc.log"
 			filePattern="easybackend-%i.log">

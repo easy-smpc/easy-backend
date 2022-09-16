@@ -33,12 +33,12 @@ server:
       
  
 keycloak:
-  realm: master
+  realm: easybackend 
   auth-server-url: http://localhost:9090/auth
   resource: easy-client
   enable-basic-auth: false # disable only except token not a username_password in header
-  credentials:
-    secret: Sg9rJVSaBGjj7nX92lUsqsV4NL3uSLXO
+#  credentials:
+#    secret: Enter if needed
   ssl-required: external
 #  # principal-attribute: preferred_username
   use-resource-role-mappings: false
