@@ -120,4 +120,27 @@ public class MessageRESTController {
         // Return success
         return ResponseEntity.ok("Message deleted");
     }
+
+    /**
+     * Deletes a message
+     * 
+     * @return
+     */
+    @PreAuthorize("hasAuthority('easybackend_admin')")
+    @DeleteMapping("/message")
+    public ResponseEntity<?> deleteMessage() {
+        // Logger
+        LOGGER.debug("Delete all messages");
+    
+        // Delete data
+        if(!messageDBAccessService.deleteAllMessages()) {
+            
+            // Return error
+            LOGGER.debug("Unable to delete all messages message with id %d and receiver %s");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    
+        // Return success
+        return ResponseEntity.ok("Messages deleted");
+    }
 }

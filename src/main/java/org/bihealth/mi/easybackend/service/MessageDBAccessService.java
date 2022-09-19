@@ -196,4 +196,38 @@ public class MessageDBAccessService {
             return false;
         }
     }
+
+    /**
+     * Delete message
+     *
+     * @return deletion successful
+     */
+    public boolean deleteAllMessages() {
+        
+        // Execute query
+        try {
+            dslCtx.transaction(new TransactionalRunnable() {
+    
+                @Override
+                public void run(Configuration configuration) throws Throwable {
+                    
+                    // Delete message
+                    int deletedMessages = DSL.using(configuration).deleteFrom(MESSAGE).execute();
+                    
+                    // Determine deletion success
+                    if (deletedMessages < 0) {
+                        LOGGER.error("Couldn't delete all messages");
+                        throw new IOException();
+                    }
+                }
+            });
+    
+            // Return
+            return true;
+        } catch (Exception e) {
+            // Handle error
+            LOGGER.error("Couldn't query the database: " + e.getMessage() + "\n");
+            return false;
+        }
+    }
 }
