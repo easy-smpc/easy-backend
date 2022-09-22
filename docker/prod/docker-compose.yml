@@ -1,4 +1,5 @@
 version: "3.9"
+# TODO Reset passwords
 
 volumes:
   eb_postgresql_data: {}
@@ -51,4 +52,14 @@ services:
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-      
+
+  eb-easybackend:
+    container_name: eb-easybackend
+    build:
+      context: ../../
+      dockerfile: docker/prod/Dockerfile
+    image: easybackend
+    networks:
+      - easy_backend_service
+    ports:
+      - "127.0.0.1:8080:8080"

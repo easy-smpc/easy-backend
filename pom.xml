@@ -173,15 +173,13 @@
 							<goal>repackage</goal>
 						</goals>
 						<configuration>
-							<finalName>easybus</finalName>
+							<finalName>easy-backend</finalName>
 							<executable>true</executable>
-							<mainClass>org.bihealth.mi.easybus.Application</mainClass>
+							<mainClass>org.bihealth.mi.easybackend.Application</mainClass>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
-
 </project>

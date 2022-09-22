@@ -1,0 +1,54 @@
+version: "3.9"
+
+volumes:
+  eb_postgresql_data: {}
+
+networks:
+  easy_backend_service:
+    name: easy_backend_service
+    driver: bridge
+
+services:
+  eb-postgresql-dev:
+    container_name: eb-postgresql-dev
+    build:      
+      context: .
+      dockerfile: DOCKERFILE_POSTGRES
+    networks:
+      - easy_backend_service
+    ports:
+      - "127.0.0.1:5432:5432"
+    environment:
+      - TZ=Europe/Berlin
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=easybackend
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - eb_postgresql_data:/var/lib/postgresql/data
+
+  eb-keycloak-dev:
+    container_name: eb-keycloak-dev
+    image: jboss/keycloak:16.1.1
+    networks:
+      - easy_backend_service
+    environment:
+      - KEYCLOAK_LOGLEVEL=ERROR
+      - ROOT_LOGLEVEL=ERROR
+      - TZ=Europe/Berlin
+      - DB_VENDOR=POSTGRES
+      - DB_ADDR=eb-postgresql
+      - DB_DATABASE=keycloak
+      - DB_USER=postgres
+      - DB_PORT=5432
+      - DB_PASSWORD=admin
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - JDBC_PARAMS=useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin
+    ports:
+      - "127.0.0.1:9090:8080"
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      
