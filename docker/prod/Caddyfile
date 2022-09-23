@@ -1,0 +1,13 @@
+{
+    email email@mymaindomain.com
+    debug
+	acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+}
+
+localhost:443 {
+  reverse_proxy eb-keycloak:8080
+}
+
+localhost:8443 {
+  reverse_proxy eb-easybackend:8080
+}

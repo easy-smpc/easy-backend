@@ -3,6 +3,7 @@ version: "3.9"
 
 volumes:
   eb_postgresql_data: {}
+  eb_caddy_data: {}
 
 networks:
   easy_backend_service:
@@ -46,6 +47,7 @@ services:
       - DB_PASSWORD=admin
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
+      - PROXY_ADDRESS_FORWARDING=true
       - JDBC_PARAMS=useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin
     ports:
       - "127.0.0.1:9090:8080"
@@ -61,5 +63,17 @@ services:
     image: easybackend
     networks:
       - easy_backend_service
+#    ports:
+#      - "127.0.0.1:8080:8080"
+      
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - eb_caddy_data:/data
     ports:
-      - "127.0.0.1:8080:8080"
+      - 443:443
+      - 8443:8443
+    networks:
+      - easy_backend_service
