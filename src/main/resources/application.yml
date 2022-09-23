@@ -10,9 +10,6 @@ spring:
     allow-circular-references: true
 
 app:
-  response:
-    # possible entries: application/json or text/plain
-    preferred-media-type: application/json
   datasource:
     easybackend:
       url: jdbc:postgresql://localhost:5432/easybackend

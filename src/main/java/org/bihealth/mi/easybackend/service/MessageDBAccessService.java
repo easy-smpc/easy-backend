@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bihealth.mi.easybackend.jooq.generated.tables.daos.MessageDao;
 import org.bihealth.mi.easybackend.jooq.generated.tables.pojos.Message;
 import org.jooq.Configuration;
 import org.jooq.DSLContext;
@@ -40,17 +39,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class MessageDBAccessService {
     
-    // TODO The methods dont distiguis between e.g. no data and error accessing the data base. Have them throw exceptions?
-    
     /** Logger */
     private static Logger LOGGER = LoggerFactory.getLogger(MessageDBAccessService.class);
     
     /** References a jOOQ configuration */
     @Autowired
     private DSLContext dslCtx;
-    
-    /** The data access object */
-    private MessageDao messageDao;
     
     /**
      * Represents an erroneous insertion of a record into the database.
@@ -61,21 +55,6 @@ public class MessageDBAccessService {
      * Represents a successful insertion of a record into the database.
      */
     public static final String INSERTION_SUCCESS = "success";
-    
-    /**
-     * Method to retrieve the data access object
-     * 
-     * @return the DAO
-     */
-    private MessageDao getMessageDao() {
-        // Create if necessary
-        if (this.messageDao == null) {
-            this.messageDao = new MessageDao(this.dslCtx.configuration());
-        }
-        
-        // Return
-        return this.messageDao;
-    }
     
     /**
      * Method to insert a message into the database.

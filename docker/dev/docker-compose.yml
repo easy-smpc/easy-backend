@@ -4,8 +4,8 @@ volumes:
   eb_postgresql_data: {}
 
 networks:
-  easy_backend_service:
-    name: easy_backend_service
+  easy_backend_service_dev:
+    name: easy_backend_service_dev
     driver: bridge
 
 services:
@@ -15,7 +15,7 @@ services:
       context: .
       dockerfile: DOCKERFILE_POSTGRES
     networks:
-      - easy_backend_service
+      - easy_backend_service_dev
     ports:
       - "127.0.0.1:5432:5432"
     environment:
@@ -32,13 +32,13 @@ services:
     container_name: eb-keycloak-dev
     image: jboss/keycloak:16.1.1
     networks:
-      - easy_backend_service
+      - easy_backend_service_dev
     environment:
       - KEYCLOAK_LOGLEVEL=ERROR
       - ROOT_LOGLEVEL=ERROR
       - TZ=Europe/Berlin
       - DB_VENDOR=POSTGRES
-      - DB_ADDR=eb-postgresql
+      - DB_ADDR=eb-postgresql-dev
       - DB_DATABASE=keycloak
       - DB_USER=postgres
       - DB_PORT=5432
