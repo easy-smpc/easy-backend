@@ -1,5 +1,5 @@
 version: "3.9"
-# TODO Reset passwords
+# TODO Reset passwords and remove outcommented ports
 
 volumes:
   eb_postgresql_data: {}
@@ -18,8 +18,8 @@ services:
       dockerfile: DOCKERFILE_POSTGRES
     networks:
       - easy_backend_service
-    ports:
-      - "127.0.0.1:5432:5432"
+#    ports:
+#      - "127.0.0.1:5432:5432"
     environment:
       - TZ=Europe/Berlin
       - POSTGRES_USER=postgres
@@ -49,8 +49,8 @@ services:
       - KEYCLOAK_PASSWORD=admin
       - PROXY_ADDRESS_FORWARDING=true
       - JDBC_PARAMS=useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin
-    ports:
-      - "127.0.0.1:9090:8080"
+#    ports:
+#      - "127.0.0.1:9090:8080"
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
@@ -64,8 +64,7 @@ services:
     networks:
       - easy_backend_service
 #    ports:
-#      - "127.0.0.1:8080:8080"
-      
+#      - "127.0.0.1:8080:8080"      
   caddy:
     image: caddy:2
     restart: unless-stopped
@@ -74,6 +73,6 @@ services:
       - eb_caddy_data:/data
     ports:
       - 443:443
-      - 8443:8443
+      - 80:80
     networks:
       - easy_backend_service
