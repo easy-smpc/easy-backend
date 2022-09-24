@@ -9,9 +9,3 @@ localhost {
   reverse_proxy /* eb-easybackend:8080
   # tls /etc/caddy/cert.pem /etc/caddy/key.pem
 }
-
-http:// {
-  reverse_proxy /auth* eb-keycloak:8080
-  reverse_proxy /* eb-easybackend:8080
-  # tls /etc/caddy/cert.pem /etc/caddy/key.pem
-}
