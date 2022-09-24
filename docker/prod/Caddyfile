@@ -1,10 +1,16 @@
 {	
-	# TODO Add dummy key, set email, and remove current acme_ca
+	# TODO Add dummy key, set email, remove http and remove current acme_ca
     email email@mymaindomain.com
 	acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
 }
 
 localhost {
+  reverse_proxy /auth* eb-keycloak:8080
+  reverse_proxy /* eb-easybackend:8080
+  # tls /etc/caddy/cert.pem /etc/caddy/key.pem
+}
+
+http:// {
   reverse_proxy /auth* eb-keycloak:8080
   reverse_proxy /* eb-easybackend:8080
   # tls /etc/caddy/cert.pem /etc/caddy/key.pem
