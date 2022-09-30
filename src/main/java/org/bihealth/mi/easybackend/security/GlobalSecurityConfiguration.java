@@ -28,28 +28,48 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
+/**
+ * Class configuring security parameters
+ * 
+ * @author Felix Wirth
+ *
+ */
 @EnableWebSecurity
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class GlobalSecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter {
 
+    /**
+     * Define session authentication strategy
+     */
     @Bean
     @Override
     protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
         return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
     }
 
+    /**
+     * Get the keycloak config resolver
+     * 
+     * @return
+     */
     @Bean
     public KeycloakConfigResolver keycloakConfigResolver() {
         return new KeycloakSpringBootConfigResolver();
     }
 
+    /**
+     * Configure with auth manager
+     */
     @Override
     public void configure(AuthenticationManagerBuilder auth) {
         KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
         auth.authenticationProvider(keycloakAuthenticationProvider);
     }
 
+    /**
+     * Configure http security
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);

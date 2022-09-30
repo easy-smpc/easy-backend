@@ -60,8 +60,7 @@ public class MessageDBAccessService {
      * Method to insert a message into the database.
      *
      * @param message the message object that should be inserted
-     * @return {@code INSERTION_SUCCESS} when the insertion was successful, {@code INSERTION_DUPLICATE}
-     *      when the record was already in the database, {@code INSERTION_ERROR} otherwise
+     * @return {@code INSERTION_SUCCESS} when the insertion was successful, {@code INSERTION_ERROR} otherwise
      */
     public boolean insertMessage(Message message) {
         

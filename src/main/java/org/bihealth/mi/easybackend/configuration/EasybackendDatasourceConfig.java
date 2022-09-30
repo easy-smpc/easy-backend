@@ -41,6 +41,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableTransactionManagement
 @Component
 public class EasybackendDatasourceConfig {
+
     /**
      * Create new easybackend data source properties.
      *
