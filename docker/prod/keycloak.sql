@@ -11,6 +11,8 @@ CREATE DATABASE keycloak;
 -- Connect to db
 \connect keycloak
 
+
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -2544,6 +2546,7 @@ c4d1dec7-9e2a-45ef-b620-75a45941b3f7	7749e2fc-153f-452f-b3f4-809118805993	t	${ro
 678f24aa-3aba-4eb0-973f-d309185f17e6	easybackend	f	${role_offline-access}	offline_access	easybackend	\N	\N
 5a7a5750-1efe-45ed-8be0-ccf69665ce84	easybackend	f	${role_uma_authorization}	uma_authorization	easybackend	\N	\N
 2a7cdfe6-7ff2-4d49-ba6d-3b747df285a6	easybackend	f	\N	easybackend_user	easybackend	\N	\N
+72ba495b-3d6e-4940-a167-60b769f2f5dc	easybackend	f	\N	easybackend_admin	easybackend	\N	\N
 \.
 
 
@@ -2948,7 +2951,7 @@ d7e3ac96-3eec-4fa5-9c80-1ea8b6b54b6d	String	jsonType.label
 
 COPY public.realm (id, access_code_lifespan, user_action_lifespan, access_token_lifespan, account_theme, admin_theme, email_theme, enabled, events_enabled, events_expiration, login_theme, name, not_before, password_policy, registration_allowed, remember_me, reset_password_allowed, social, ssl_required, sso_idle_timeout, sso_max_lifespan, update_profile_on_soc_login, verify_email, master_admin_client, login_lifespan, internationalization_enabled, default_locale, reg_email_as_username, admin_events_enabled, admin_events_details_enabled, edit_username_allowed, otp_policy_counter, otp_policy_window, otp_policy_period, otp_policy_digits, otp_policy_alg, otp_policy_type, browser_flow, registration_flow, direct_grant_flow, reset_credentials_flow, client_auth_flow, offline_session_idle_timeout, revoke_refresh_token, access_token_life_implicit, login_with_email_allowed, duplicate_emails_allowed, docker_auth_flow, refresh_token_max_reuse, allow_user_managed_access, sso_max_lifespan_remember_me, sso_idle_timeout_remember_me, default_role) FROM stdin;
 master	60	300	60	\N	\N	\N	t	f	0	\N	master	0	\N	f	f	f	f	EXTERNAL	1800	36000	f	f	c950d556-3e66-49b3-9c82-2d4063f0325a	1800	f	\N	f	f	f	f	0	1	30	6	HmacSHA1	totp	8c782ee1-54ab-4b5c-a5ec-d952a6e1f3cb	4119c649-701e-4a9d-b7b1-1d1165a51537	82d5a563-b26a-461d-8c76-35811de00686	f2dc59e8-bc3e-47b0-8216-f693782da99e	a16b9bc2-5015-416a-8882-453ac64b58cc	2592000	f	900	t	f	13a6a25d-9d02-406b-b294-58e90219d5d4	0	f	0	0	eb8a571c-62ac-448a-b8de-48476a92c0fe
-easybackend	60	300	300	\N	\N	\N	t	f	0	\N	easybackend	0	\N	f	f	f	f	EXTERNAL	1800	36000	f	f	7749e2fc-153f-452f-b3f4-809118805993	1800	f	\N	f	f	f	f	0	1	30	6	HmacSHA1	totp	5645bc6c-fa10-4d3a-8a5e-90edb66812df	ef83c91d-ea85-4006-b2ac-82de40f1aa80	44312ed3-3e5d-45a8-af11-f173acb9e155	a0f68b61-5c4e-43a5-921a-a557b5a52364	4892e224-ef69-401b-af1d-f31c9d1f1c90	2592000	f	900	t	f	f1bcb849-e5ee-401f-b8cc-ac3d145726d8	0	f	0	0	780b83c6-426a-4bb4-9fe9-a6dadcb51044
+easybackend	60	300	300	\N	\N	\N	t	f	0	\N	easybackend	0	\N	f	f	f	f	NONE	1800	36000	f	f	7749e2fc-153f-452f-b3f4-809118805993	1800	f	\N	f	f	f	f	0	1	30	6	HmacSHA1	totp	5645bc6c-fa10-4d3a-8a5e-90edb66812df	ef83c91d-ea85-4006-b2ac-82de40f1aa80	44312ed3-3e5d-45a8-af11-f173acb9e155	a0f68b61-5c4e-43a5-921a-a557b5a52364	4892e224-ef69-401b-af1d-f31c9d1f1c90	2592000	f	900	t	f	f1bcb849-e5ee-401f-b8cc-ac3d145726d8	0	f	0	0	780b83c6-426a-4bb4-9fe9-a6dadcb51044
 \.
 
 
@@ -2977,13 +2980,19 @@ displayNameHtml	master	<div class="kc-logo-text"><span>Keycloak</span></div>
 defaultSignatureAlgorithm	master	RS256
 offlineSessionMaxLifespanEnabled	master	false
 offlineSessionMaxLifespan	master	5184000
-_browser_header.contentSecurityPolicyReportOnly	easybackend	
-_browser_header.xContentTypeOptions	easybackend	nosniff
-_browser_header.xRobotsTag	easybackend	none
-_browser_header.xFrameOptions	easybackend	SAMEORIGIN
-_browser_header.contentSecurityPolicy	easybackend	frame-src 'self'; frame-ancestors 'self'; object-src 'none';
-_browser_header.xXSSProtection	easybackend	1; mode=block
-_browser_header.strictTransportSecurity	easybackend	max-age=31536000; includeSubDomains
+oauth2DeviceCodeLifespan	easybackend	600
+oauth2DevicePollingInterval	easybackend	5
+cibaBackchannelTokenDeliveryMode	easybackend	poll
+cibaExpiresIn	easybackend	120
+cibaInterval	easybackend	5
+cibaAuthRequestedUserHint	easybackend	login_hint
+parRequestUriLifespan	easybackend	60
+userProfileEnabled	easybackend	false
+frontendUrl	easybackend	http://eb-keycloak:8080/auth
+clientSessionIdleTimeout	easybackend	0
+clientSessionMaxLifespan	easybackend	0
+clientOfflineSessionIdleTimeout	easybackend	0
+clientOfflineSessionMaxLifespan	easybackend	0
 bruteForceProtected	easybackend	false
 permanentLockout	easybackend	false
 maxFailureWaitSeconds	easybackend	900
@@ -2992,13 +3001,11 @@ waitIncrementSeconds	easybackend	60
 quickLoginCheckMilliSeconds	easybackend	1000
 maxDeltaTimeSeconds	easybackend	43200
 failureFactor	easybackend	30
+actionTokenGeneratedByAdminLifespan	easybackend	43200
+actionTokenGeneratedByUserLifespan	easybackend	300
 defaultSignatureAlgorithm	easybackend	RS256
 offlineSessionMaxLifespanEnabled	easybackend	false
 offlineSessionMaxLifespan	easybackend	5184000
-actionTokenGeneratedByAdminLifespan	easybackend	43200
-actionTokenGeneratedByUserLifespan	easybackend	300
-oauth2DeviceCodeLifespan	easybackend	600
-oauth2DevicePollingInterval	easybackend	5
 webAuthnPolicyRpEntityName	easybackend	keycloak
 webAuthnPolicySignatureAlgorithms	easybackend	ES256
 webAuthnPolicyRpId	easybackend	
@@ -3017,11 +3024,15 @@ webAuthnPolicyRequireResidentKeyPasswordless	easybackend	not specified
 webAuthnPolicyUserVerificationRequirementPasswordless	easybackend	not specified
 webAuthnPolicyCreateTimeoutPasswordless	easybackend	0
 webAuthnPolicyAvoidSameAuthenticatorRegisterPasswordless	easybackend	false
-cibaBackchannelTokenDeliveryMode	easybackend	poll
-cibaExpiresIn	easybackend	120
-cibaInterval	easybackend	5
-cibaAuthRequestedUserHint	easybackend	login_hint
-parRequestUriLifespan	easybackend	60
+client-policies.profiles	easybackend	{"profiles":[]}
+client-policies.policies	easybackend	{"policies":[]}
+_browser_header.contentSecurityPolicyReportOnly	easybackend	
+_browser_header.xContentTypeOptions	easybackend	nosniff
+_browser_header.xRobotsTag	easybackend	none
+_browser_header.xFrameOptions	easybackend	SAMEORIGIN
+_browser_header.contentSecurityPolicy	easybackend	frame-src 'self'; frame-ancestors 'self'; object-src 'none';
+_browser_header.xXSSProtection	easybackend	1; mode=block
+_browser_header.strictTransportSecurity	easybackend	max-age=31536000; includeSubDomains
 \.
 
 
@@ -3341,6 +3352,9 @@ ea5dbcb7-ded7-4979-8d0c-4f7e52f96c3a	ef457bb2-92d4-452c-934c-9c06092a28f2
 780b83c6-426a-4bb4-9fe9-a6dadcb51044	18da88ed-b8be-4822-a9a3-82617eca4d23
 2a7cdfe6-7ff2-4d49-ba6d-3b747df285a6	18da88ed-b8be-4822-a9a3-82617eca4d23
 2a7cdfe6-7ff2-4d49-ba6d-3b747df285a6	4cf81e1c-8bc6-4985-90a6-9b0a4982131e
+72ba495b-3d6e-4940-a167-60b769f2f5dc	eca39438-43e1-42dd-bae0-17cb29343322
+72ba495b-3d6e-4940-a167-60b769f2f5dc	4cf81e1c-8bc6-4985-90a6-9b0a4982131e
+72ba495b-3d6e-4940-a167-60b769f2f5dc	18da88ed-b8be-4822-a9a3-82617eca4d23
 \.
 
 
