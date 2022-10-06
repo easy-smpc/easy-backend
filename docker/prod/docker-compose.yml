@@ -18,8 +18,6 @@ services:
       dockerfile: DOCKERFILE_POSTGRES
     networks:
       - easy_backend_service
-#    ports:
-#      - "127.0.0.1:5432:5432"
     environment:
       - TZ=Europe/Berlin
       - POSTGRES_USER=postgres
@@ -32,7 +30,7 @@ services:
 
   eb-keycloak:
     container_name: eb-keycloak
-    image: jboss/keycloak:16.1.1
+    image:  quay.io/keycloak/keycloak:19.0.2-legacy
     networks:
       - easy_backend_service
     environment:
@@ -46,14 +44,14 @@ services:
       - DB_PORT=5432
       - DB_PASSWORD=admin
       - KEYCLOAK_USER=admin
-      - KEYCLOAK_PASSWORD=${KEYCLOAK_PW}
+      - KEYCLOAK_PASSWORD=changeThis
       - PROXY_ADDRESS_FORWARDING=true
+      - KEYCLOAK_IMPORT=/root/realm.json
       - JDBC_PARAMS=useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin
-#    ports:
-#      - "127.0.0.1:9090:8080"
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+      - ./realm.json:/root/realm.json
 
   eb-easybackend:
     container_name: eb-easybackend
@@ -63,8 +61,7 @@ services:
     image: easybackend
     networks:
       - easy_backend_service
-#    ports:
-#      - "127.0.0.1:8080:8080"      
+
   caddy:
     image: caddy:2
     restart: unless-stopped
