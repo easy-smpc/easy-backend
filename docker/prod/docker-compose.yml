@@ -1,5 +1,4 @@
 version: "3.9"
-# TODO Reset passwords and remove outcommented ports
 
 volumes:
   eb_postgresql_data: {}
@@ -46,7 +45,7 @@ services:
       - DB_PORT=5432
       - DB_PASSWORD=admin
       - KEYCLOAK_USER=admin
-      - KEYCLOAK_PASSWORD=${KEYCLOAK_PW}
+      - KEYCLOAK_PASSWORD=admin
       - PROXY_ADDRESS_FORWARDING=true
       - JDBC_PARAMS=useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin
 #    ports:
