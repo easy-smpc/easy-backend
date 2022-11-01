@@ -51,6 +51,7 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
       - ./realm.json:/root/realm.json
+      - ./register.ftl:/opt/jboss/keycloak/themes/base/login/register.ftl
 
   eb-easybackend:
     container_name: eb-easybackend
