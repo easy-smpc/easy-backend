@@ -66,6 +66,14 @@ public class MessageRESTController {
         // Logger
         LOGGER.debug(String.format("Send message for scope %s and receiver %s", scope, receiver));
         
+        // Check whether a new start message is allowed
+        if(scope.endsWith("_round0") && messageDBAccessService.getMessages(receiver, scope) != null) {
+            // Return error
+            LOGGER.debug(String.format("Already existing first message for scope %s and receiver %s", scope, receiver));
+            // The error code 418 was chosen due to the author's high appreciation for the magic beverage of tea
+            return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
+        }
+        
         if(!messageDBAccessService.insertMessage(new Message().setReceiver(receiver).setScope(scope).setContent(message))) {
             // Return error
             LOGGER.debug(String.format("Unable to write message for scope %s and receiver %s", scope, receiver));
