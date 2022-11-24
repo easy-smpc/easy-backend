@@ -75,7 +75,7 @@ public class GlobalSecurityConfiguration extends KeycloakWebSecurityConfigurerAd
         super.configure(http);
         http.csrf().disable()
         .authorizeRequests()
-        .antMatchers(new String[]{"/", "/index.html"}).permitAll()
+        .antMatchers(new String[]{"/", "/css/**", "/font/**", "/fonts/**", "/img/**", "/js/**", "/min/**", "/index.html"}).permitAll()
         .anyRequest().authenticated();
     }
 }
