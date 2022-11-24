@@ -53,8 +53,8 @@ services:
       - ./realm.json:/root/realm.json
       - ./register.ftl:/opt/jboss/keycloak/themes/base/login/register.ftl
 
-  eb-easybackend:
-    container_name: eb-easybackend
+  eb-service:
+    container_name: eb-service
     build:
       context: ../../
       dockerfile: docker/prod/Dockerfile
@@ -63,6 +63,7 @@ services:
       - easy_backend_service
 
   caddy:
+    container_name: eb-caddy
     image: caddy:2
     restart: unless-stopped
     volumes:
