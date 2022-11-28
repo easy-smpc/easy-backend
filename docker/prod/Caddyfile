@@ -1,0 +1,10 @@
+{	
+}
+
+# Adapt this domain
+testdomain.org {
+
+  tls /etc/caddy/cert.pem /etc/caddy/key.pem
+  reverse_proxy /auth* eb-keycloak:8080
+  reverse_proxy /* eb-service:8080
+}
