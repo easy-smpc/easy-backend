@@ -134,6 +134,44 @@ public class MessageDBAccessService {
             return null;
         }
     }
+
+    /**
+     *  List all messages for a user and pattern
+     * 
+     * @param receiver
+     * @param pattern
+     * @return
+     */
+    public List<Message> listMessages(String receiver, String pattern) {
+        // Prepare
+        List<Message> messages = new ArrayList<>();
+        
+        // Execute query
+        try {
+            dslCtx.transaction(new TransactionalRunnable() {
+
+                @Override
+                public void run(Configuration configuration) throws Throwable {
+
+                    // Build and execute the query
+                    messages.addAll(DSL.using(configuration)
+                                       .selectFrom(MESSAGE)
+                                       .where(MESSAGE.RECEIVER.equal(receiver))
+                                       .and(MESSAGE.SCOPE.contains(pattern))
+                                       .fetchInto(Message.class));
+                    // Return
+                    return;
+                }
+            });
+
+            // Return
+            return messages.size() > 0 ? messages : null;
+        } catch (Exception e) {
+            // Handle error
+            LOGGER.error("Couldn't query the database: " + e.getMessage() + "\n");
+            return null;
+        }
+    }
     
     /**
      * Delete message

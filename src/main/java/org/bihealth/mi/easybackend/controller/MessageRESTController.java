@@ -151,4 +151,24 @@ public class MessageRESTController {
         // Return success
         return ResponseEntity.ok("Messages deleted");
     }
+    
+    /**
+     *  List all messages whose scope match a pattern
+     * 
+     * @param pattern
+     * @param principal
+     * @return
+     */
+    @PreAuthorize("hasAuthority('easybackend_user')")
+    @GetMapping("/list/{pattern}")
+    public ResponseEntity<?> listMessages(@PathVariable("pattern") String pattern, Principal principal) {
+        // Logger
+        LOGGER.debug(String.format("List messages for receiver %s and pattern %s", principal.getName(), pattern));
+
+        // Get data
+        List<Message> messages = messageDBAccessService.listMessages(principal.getName(), pattern);
+
+        // Return
+        return ResponseEntity.status(HttpStatus.OK).body(messages);
+    }
 }
