@@ -19,6 +19,8 @@ import java.util.List;
 
 import org.bihealth.mi.easybackend.jooq.generated.tables.pojos.Message;
 import org.bihealth.mi.easybackend.service.MessageDBAccessService;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.keycloak.representations.AccessToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,11 +96,20 @@ public class MessageRESTController {
     @PreAuthorize("hasAuthority('easybackend_user')")
     @GetMapping("/receive/{scope}")
     public ResponseEntity<?> getMessages(@PathVariable("scope") String scope, Principal principal) {
+        
+        // Get Keycloak accessToken
+        AccessToken token = getKeycloakAccessToken(principal);
+        if(token == null) {
+            // Return error
+            LOGGER.debug("Unable to get messages for receiver %s", principal.getName());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
         // Logger
-        LOGGER.debug(String.format("Get messages for receiver %s", principal.getName()));
+        LOGGER.debug(String.format("Get messages for receiver %s", token.getEmail()));
 
         // Get data
-        List<Message> messages = messageDBAccessService.getMessages(principal.getName(), scope);
+        List<Message> messages = messageDBAccessService.getMessages(token.getEmail(), scope);
 
         // Return
         return ResponseEntity.status(HttpStatus.OK).body(messages);
@@ -114,14 +125,23 @@ public class MessageRESTController {
     @PreAuthorize("hasAuthority('easybackend_user')")
     @DeleteMapping("/message/{messageId}")
     public ResponseEntity<?> deleteMessage(@PathVariable("messageId") int messageId, Principal principal) {
+        
+        // Get Keycloak accessToken
+        AccessToken token = getKeycloakAccessToken(principal);
+        if(token == null) {
+            // Return error
+            LOGGER.debug("Unable to delete message with id %d for receiver %s", messageId, principal.getName());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
         // Logger
-        LOGGER.debug(String.format("Delete message with id %d for receiver %s", messageId, principal.getName()));
+        LOGGER.debug(String.format("Delete message with id %d for receiver %s", messageId, token.getEmail()));
 
         // Delete data
-        if(!messageDBAccessService.deleteMessage(messageId, principal.getName())) {
+        if(!messageDBAccessService.deleteMessage(messageId, token.getEmail())) {
             
             // Return error
-            LOGGER.debug(String.format("Unable to delete message with id %d and receiver %s", messageId, principal.getName()));
+            LOGGER.debug(String.format("Unable to delete message with id %d and receiver %s", messageId, token.getEmail()));
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -130,7 +150,7 @@ public class MessageRESTController {
     }
 
     /**
-     * Deletes a message
+     * Deletes all messages
      * 
      * @return
      */
@@ -144,7 +164,7 @@ public class MessageRESTController {
         if(!messageDBAccessService.deleteAllMessages()) {
             
             // Return error
-            LOGGER.debug("Unable to delete all messages message with id %d and receiver %s");
+            LOGGER.debug("Unable to delete all messages");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     
@@ -162,13 +182,37 @@ public class MessageRESTController {
     @PreAuthorize("hasAuthority('easybackend_user')")
     @GetMapping("/list/{pattern}")
     public ResponseEntity<?> listMessages(@PathVariable("pattern") String pattern, Principal principal) {
+        
+        // Get Keycloak accessToken
+        AccessToken token = getKeycloakAccessToken(principal);
+        if(token == null) {
+            // Return error
+            LOGGER.debug("Unable to list messages for receiver %s and pattern %s", principal.getName(), pattern);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         // Logger
-        LOGGER.debug(String.format("List messages for receiver %s and pattern %s", principal.getName(), pattern));
+        LOGGER.debug(String.format("List messages for receiver %s and pattern %s", token.getEmail(), pattern));
 
         // Get data
-        List<Message> messages = messageDBAccessService.listMessages(principal.getName(), pattern);
+        List<Message> messages = messageDBAccessService.listMessages(token.getEmail(), pattern);
 
         // Return
         return ResponseEntity.status(HttpStatus.OK).body(messages);
+    }
+
+    /**
+     * Gets the Keycloak accesss token from a principal object 
+     * @param principal
+     * @return 
+     */
+    private AccessToken getKeycloakAccessToken(Principal principal) {
+        
+        try {
+            KeycloakAuthenticationToken keycloakAuthenticationToken = (KeycloakAuthenticationToken) principal;
+            return keycloakAuthenticationToken.getAccount().getKeycloakSecurityContext().getToken();
+        } catch(Exception e) {
+            return null;
+        }
     }
 }
