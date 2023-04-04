@@ -33,7 +33,7 @@ other users to collaborate and (hopefully) answer your question in a timely
 manner. If your request contains confidential information or is not suited for a
 public issue, send us an email.
 
-EasySMPC's core development team consists of:
+EasyBackend's core development team consists of:
 
 * [Felix Nikolaus Wirth](https://github.com/fnwirth) - [felix-nikolaus.wirth@charite.de](felix-nikolaus.wirth@charite.de)
 
